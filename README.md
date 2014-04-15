@@ -39,3 +39,5 @@ This property allows you to enable or disable the column header context menu.
 $("#developers-local").columnResize({ EnableColumnHeaderContextMenu: true });
 
 This table header context menu allows you to hide or show specific columns, also it prevents all columns from getting hidden.
+
+The context menu utility we are using to implement the context menu can be downloaded from http://medialize.github.com/jQuery-contextMenu/
