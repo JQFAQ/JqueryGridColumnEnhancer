@@ -1,244 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>JqueryGridColumnEnhancer</title>
-	
-	<link href="Styles/jquery.ui.all.css" rel="stylesheet" type="text/css" />
-	
-	<script src="Scripts/jquery-1.7.1.js"></script>
-	<script src="Scripts/external/globalize.js"></script>
-	<script src="Scripts/external/jquery.tmpl.js"></script>
-   
-	<script src="Scripts/jquery.ui.widget.js" type="text/javascript"></script>
-	<script src="Scripts/jquery.ui.dataview.js" type="text/javascript"></script>
-	<script src="Scripts/jquery.ui.grid.js" type="text/javascript"></script>
-	<script src="Scripts/jquery.ui.observable.js" type="text/javascript"></script>
-    	<script src="Scripts/JqueryGridColumnEnhancer.js" type="text/javascript"></script>
-    	<script src="Scripts/JSEvents.js" type="text/javascript"></script>
-    	<script src="Scripts/jquery.contextMenu.js" type="text/javascript"></script>
-    	<link href="Styles/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
-	
-	<script type="text/javascript">
-	
-   var localDevelopers = [
-	{
-		"id":1,
-        "firstName": "Richard",
-		"lastName": "Worth",
-		"country": "USA",
-		"twitter": "rworth",
-		"github": "rdworth",
-		"bitcoins": 150,
-		"random": {
-			"value": 10
-		},
-		"favorites": [1, 2, 3],
-		"date": 174351600000
-	},
-	{
-        "id":2,
-		"firstName": "Scott",
-		"lastName": "González",
-		"country": "USA",
-		"twitter": "scott_gonzalez",
-		"github": "scottgonzalez",
-		"bitcoins": 10,
-		"random": {
-			"value": 20
-		},
-		"favorites": [1, 2, 3],
-		"date": 359468280000
-	}];
-	$(function () {
-	    var developers = $.ui.dataviewlocal({
-	        input: localDevelopers,
-	        paging: {
-	            limit: 8
-	        }
-	    });
+    <meta charset="utf-8">
+    <title>JqueryGridColumnEnhancer</title>
 
-	    var grid = $("#developers-local").grid({
-	        heightStyle: "fill",
-	        source: developers.result
-	    });
-	    developers.refresh();
-	    columnResizer();
-	    var element = $(".ui-grid").find("table thead");
-	    var gridBody = $(".ui-grid-body");
-	    var gridHead = $(".ui-grid-head");
-	    var totalWidth = 0;
-	    var colWidths = element.find("tr:first").children().map(function () {
-	        var width = $(this).outerWidth();
-	        totalWidth += width;
-	        return width;
-	    });
+    <link href="Styles/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+    <script src="Scripts/jquery-1.7.1.js"></script>
+    <script src="Scripts/external/globalize.js"></script>
+    <script src="Scripts/external/jquery.tmpl.js"></script>
+    <script src="Scripts/jquery.ui.widget.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.ui.dataview.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.ui.grid.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.ui.observable.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.ui.dataviewlocal.js" type="text/javascript"></script>
+    <script src="Scripts/JqueryGridColumnEnhancer.js"></script>
+    <script src="Scripts/JSEvents.js" type="text/javascript"></script>
+    <script src="Scripts/jquery.contextMenu.js" type="text/javascript"></script>
+    <link href="Styles/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 
-	    gridHead.find("colgroup").children().each(function (i) {
-	        $(this).css("width", (colWidths[i] + 50) + 'px');
-	    });
+    <script type="text/javascript">
 
-	    gridBody.find("colgroup").children().each(function (i) {
-	        $(this).css("width", (colWidths[i] + 50) + 'px');
-	    });
+        var localDevelopers = [
+         {
+             "id": 1,
+             "firstName": "Richard",
+             "lastName": "Worth",
+             "country": "USA",
+             "twitter": "rworth",
+             "github": "rdworth",
+             "bitcoins": 150,
+             "random": {
+                 "value": 10
+             },
+             "favorites": [1, 2, 3],
+             "date": 174351600000
+         },
+         {
+             "id": 2,
+             "firstName": "Scott",
+             "lastName": "González",
+             "country": "USA",
+             "twitter": "scott_gonzalez",
+             "github": "scottgonzalez",
+             "bitcoins": 10,
+             "random": {
+                 "value": 20
+             },
+             "favorites": [1, 2, 3],
+             "date": 359468280000
+         }];
+        $(function () {
+            var developers = $.ui.dataviewlocal({
+                input: localDevelopers,
+                paging: {
+                    limit: 8
+                }
+            });
 
-	    function columnResizer() {
-	        var gridBody = $(".ui-grid-body");
-	        var colGroup = gridBody.find("colgroup");
-	        var child = $(".ui-grid-head").find('thead tr th');
-	        colGroup.children().each(function (i) {
-	            var innerHtml = child[i].innerHTML;
-	            child[i].innerHTML = "";
-	            $('<div style="position: relative"><span>' + innerHtml + '</span><div class="resizeHelper ui-resizable-handle ui-resizable-e"></div></div>').appendTo(child[i]);
-	        });
-	        var gridBodytbody = gridBody.find("tbody");
-	        for (var i = 0; i < gridBodytbody[0].children.length; i++)
-	            $('<td class="ui-widget-content">&nbsp</td>').appendTo(gridBody.find("tr")[i]);
-	        var tr = $(".ui-grid-head-table").find("tr");
-	        $('<th style="width: 100%; padding: 0.2em 0.4em; margin: 0px; border-width: 0px 1px 0px 0px;"  class="ui-table-head-bg ui-widget-header empty-column"><div style="position: relative"><span>&nbsp</span><div class="resizeHelper ui-resizable-handle ui-resizable-e" style="display: block;"></div></div></th>').appendTo(tr);
-	        $("#developers-local").columnResize({EnableColumnHeaderContextMenu:true});
-	    }
+            var grid = $("#developers-local").grid({
+                heightStyle: "fill",
+                source: developers.result
+            });
+            developers.refresh();
+            columnResizer();
+            var element = $(".ui-grid").find("table thead");
+            var gridBody = $(".ui-grid-body");
+            var gridHead = $(".ui-grid-head");
 
-	    var idColVisibility = true;
-	    var fNameColVisibility = true;
-	    var lNameColVisibility = true;
-	    var countryColVisibility = true;
-	    var randomColVisibility = true;
-	    var dateColVisibility = true;
-	    var timeColVisibility = true;
+            var totalWidth = 0;
+            var colWidths = element.find("tr:first").children().map(function () {
+                var width = $(this).outerWidth();
+                totalWidth += width;
+                return width;
+            });
 
-	    var tableInstance = $("#developers-local").data("grid");
 
-	    var columnContextMenu = tableInstance.ColumnContextMenu;
-	    columnMenuItems = [
-            {
-                keyName: "0", name: "ID", icon: "ID", callback: function (key, opt) {
-                    if (!idColVisibility) {
-                        tableInstance.ShowColumn("IDColumn");
-                    } else {
-                        tableInstance.HideColumn("IDColumn");
-                    }
-                    idColVisibility = !idColVisibility;
-                }
-            },
-            {
-                keyName: "1", name: "FirstName", icon: "FirstName", callback: function (key, opt) {
-                    if (!fNameColVisibility) {
-                        tableInstance.ShowColumn("FirstNameColumn");
-                    } else {
-                        tableInstance.HideColumn("FirstNameColumn");
-                    }
-                    fNameColVisibility = !fNameColVisibility;
-                }
-            },
-            {
-                keyName: "2", name: "LastName", icon: "LastName", callback: function (key, opt) {
-                    if (!lNameColVisibility) {
-                        tableInstance.ShowColumn("LastNameColumn");
-                    } else {
-                        tableInstance.HideColumn("LastNameColumn");
-                    }
-                    lNameColVisibility = !lNameColVisibility;
-                }
-            },
-            {
-                keyName: "3", name: "Country", icon: "Country", callback: function (key, opt) {
-                    if (!countryColVisibility) {
-                        tableInstance.ShowColumn("CountryColumn");
-                    } else {
-                        tableInstance.HideColumn("CountryColumn");
-                    }
-                    countryColVisibility = !countryColVisibility;
-                }
-            },
-            {
-                keyName: "4", name: "Random", icon: "Random", callback: function (key, opt) {
-                    if (!randomColVisibility) {
-                        tableInstance.ShowColumn("RandomColumn");
-                    } else {
-                        tableInstance.HideColumn("RandomColumn");
-                    }
-                    randomColVisibility = !randomColVisibility;
-                }
-            },
-            {
-                keyName: "5", name: "Date", icon: "Date", callback: function (key, opt) {
-                    if (!dateColVisibility) {
-                        tableInstance.ShowColumn("DateColumn");
-                    } else {
-                        tableInstance.HideColumn("DateColumn");
-                    }
-                    dateColVisibility = !dateColVisibility;
-                }
-            },
-            {
-                keyName: "6", name: "Time", icon: "Time", callback: function (key, opt) {
-                    if (!timeColVisibility) {
-                        tableInstance.ShowColumn("TimeColumn");
-                    } else {
-                        tableInstance.HideColumn("TimeColumn");
-                    }
-                    timeColVisibility = !timeColVisibility;
-                }
-            }];
-	    if (columnContextMenu != undefined)
-	        columnContextMenu.AddNewItems(columnMenuItems, true);
-	});
+
+            function columnResizer() {
+                var gridBody = $(".ui-grid-body");
+                var colGroup = gridBody.find("colgroup");
+                var child = $(".ui-grid-head").find('thead tr th');
+
+                colGroup.children().each(function (i) {
+                    var innerHtml = child[i].innerHTML;
+                    child[i].innerHTML = "";
+                    $('<div style="position: relative"><span>' + innerHtml + '</span><div class="resizeHelper ui-resizable-handle ui-resizable-e"></div></div>').appendTo(child[i]);
+                });
+
+                $("#developers-local").JqueryGridColumnEnhancer({ EnableColumnHeaderContextMenu: true });
+            }
+
+
+
+
+        });
 	</script>
-	<style type="text/css">
-		.ui-grid tr .navigator-active { background: rgba(0,0,255,0.1); }
-		.ui-grid input { border: none; margin: 0; }
-		.ui-autocomplete { width: 200px; max-height: 200px; overflow: auto; }
-		thead td { text-align: center; }
-		#pageDevelopers { text-align: center; }
-		.totals { padding-left: 1em; }
-		#container { overflow:hidden; }
-	</style>
+    <style type="text/css">
+        .ui-grid tr .navigator-active {
+            background: rgba(0,0,255,0.1);
+        }
+
+        .ui-grid input {
+            border: none;
+            margin: 0;
+        }
+
+        .ui-autocomplete {
+            width: 200px;
+            max-height: 200px;
+            overflow: auto;
+        }
+
+        thead td {
+            text-align: center;
+        }
+
+        #pageDevelopers {
+            text-align: center;
+        }
+
+        .totals {
+            padding-left: 1em;
+        }
+
+        #container {
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-<div id="container">
-    <div>Right click on the header to Hide/Show the specific column</div>
-    <table id="developers-local">      	
-	    <thead>
-		    <tr>
-                <th id="IDColumn" data-property="id">ID</th>
-			    <th id="FirstNameColumn" data-property="firstName">First Name</th>
-			    <th id="LastNameColumn" data-property="lastName">Last Name</th>
-			    <th id="CountryColumn" data-property="country" data-editor="countrycomplete">Country</th>
-			    <th id="RandomColumn" data-property="random.value" data-type="number" data-editor="randomSpinner"
-                    data-editor-options='{"min":-1, "max": 125}'>Random</th>
-			    <th id="DateColumn" data-template="#cell-date-tmpl">Date</th>
-                <th id="TimeColumn" data-template="#cell-time-tmpl">Time</th>
-		    </tr>
-	    </thead>
-	    <tbody>
-	    </tbody>
-    </table>
-</div>
+    <div id="container">
+        <div>Right click on the header to Hide/Show the specific column</div>
+        <table id="developers-local">
+            <thead>
+                <tr>
+                    <th id="IDColumn" data-property="id">ID</th>
+                    <th id="FirstNameColumn" data-property="firstName">First Name</th>
+                    <th id="LastNameColumn" data-property="lastName">Last Name</th>
+                    <th id="CountryColumn" data-property="country" data-editor="countrycomplete">Country</th>
+                    <th id="RandomColumn" data-property="random.value" data-type="number" data-editor="randomSpinner"
+                        data-editor-options='{"min":-1, "max": 125}'>Random</th>
+                    <th id="DateColumn" data-template="#cell-date-tmpl">Date</th>
+                    <th id="TimeColumn" data-template="#cell-time-tmpl">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 
-<script id="edit-tmpl" type="text/x-jquery-tmpl">
-{{if $.isArray(value)}}
-	<ul>
-		{{each(index, valueX) value}}
-			<li><input type="text" name="${name}" placeholder="${label}" value="${valueX}" title="${label}" /></li>
-		{{/each}}
-	</ul>
-{{else}}
-	<input type="text" name="${name}" placeholder="${label}" value="${value}" title="${label}" />
-{{/if}}
-</script>
-<script id="cell-date-tmpl" type="text/x-jquery-tmpl">
-	<td class="ui-widget-content">${Globalize.format(new Date(date), "d")}</td>
-</script>
-<script id="cell-time-tmpl" type="text/x-jquery-tmpl">
-	<td class="ui-widget-content">${Globalize.format(new Date(date), "T")}</td>
-</script>
-<script id="cell-edit-tmpl" type="text/x-jquery-tmpl">
-	<td class="ui-widget-content"><button class='edit'>Edit</button></td>
-</script>
-<script id="cell-remove-tmpl" type="text/x-jquery-tmpl">
-	<td class="ui-widget-content"><button class='remove'>Remove</button></td>
-</script>
+    <script id="edit-tmpl" type="text/x-jquery-tmpl">
+        {{if $.isArray(value)}}
+
+        <ul>
+            {{each(index, valueX) value}}
+		
+            <li>
+                <input type="text" name="${name}" placeholder="${label}" value="${valueX}" title="${label}" /></li>
+            {{/each}}
+
+        </ul>
+        {{else}}
+
+        <input type="text" name="${name}" placeholder="${label}" value="${value}" title="${label}" />
+        {{/if}}
+    </script>
+    <script id="cell-date-tmpl" type="text/x-jquery-tmpl">
+        <td class="ui-widget-content">${Globalize.format(new Date(date), "d")}</td>
+    </script>
+    <script id="cell-time-tmpl" type="text/x-jquery-tmpl">
+        <td class="ui-widget-content">${Globalize.format(new Date(date), "T")}</td>
+    </script>
+    <script id="cell-edit-tmpl" type="text/x-jquery-tmpl">
+        <td class="ui-widget-content">
+            <button class='edit'>Edit</button></td>
+    </script>
+    <script id="cell-remove-tmpl" type="text/x-jquery-tmpl">
+        <td class="ui-widget-content">
+            <button class='remove'>Remove</button></td>
+    </script>
 
 </body>
 </html>
