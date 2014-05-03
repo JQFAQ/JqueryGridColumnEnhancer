@@ -22,20 +22,20 @@ Add a table to your html on which the column resizer is to be applied.
 
 Extend the above table to enable column resizer as follows,
 
-<b>$(document).ready(function(){ $("#developers-local").columnResize(); });</b>
+<i>$(document).ready(function(){ $("#developers-local").columnEnhamcer(); });</i>
 
 
 <strong>Setting minimum resize width</strong>
 
 
-<b>$("#developers-local").columnEnhancer({ minWidth: 20 });</b>
+<i>$("#developers-local").columnEnhancer({ minWidth: 20 });</i>
 
 
 <strong>Enabling context-menu</strong>
 
 Turn on context menu on the grid header as follows:
 
-$("#developers-local").columnEnhancer({ EnableColumnHeaderContextMenu: true });
+<i>$("#developers-local").columnEnhancer({ EnableColumnHeaderContextMenu: true });</i>
 
 This table header context menu allows you to hide or show specific columns. This also prevents all columns from getting hidden.
 
